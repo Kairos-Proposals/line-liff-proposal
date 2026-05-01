@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>公式LINE liff 買取フロー構築 提案書 | Kairos</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0A0A0A;
+  --black-mid: #111111;
+  --black-light: #181818;
+  --white: #FAFAFA;
+  --line: #06C755;
+  --line-dark: #05A847;
+  --line-light: rgba(6,199,85,0.1);
+  --line-border: rgba(6,199,85,0.28);
+  --gray: #888888;
+  --stone: #2A2A2A;
+  --text-dim: rgba(255,255,255,0.5);
+  --text-muted: rgba(255,255,255,0.2);
+  --border: rgba(255,255,255,0.07);
+  --blue: #4A90D9;
+  --blue-light: rgba(74,144,217,0.1);
+  --blue-border: rgba(74,144,217,0.25);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Noto Sans JP',sans-serif; background:var(--black); color:var(--white); overflow-x:hidden; }
+
+/* HERO */
+.hero {
+  min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+  padding:80px 28px 64px; position:relative; overflow:hidden;
+}
+.hero-top { position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg, transparent, var(--line), transparent); }
+.hero-badge { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line-border); background:var(--line-light); padding:5px 16px; font-family:'DM Mono',monospace; font-size:10px; color:var(--line); letter-spacing:0.14em; text-transform:uppercase; margin-bottom:36px; width:fit-content; }
+.hero-label { font-family:'DM Mono',monospace; font-size:11px; color:var(--line); letter-spacing:0.1em; margin-bottom:16px; opacity:0.8; }
+.hero h1 { font-family:'Noto Serif JP',serif; font-size:clamp(26px,6vw,50px); font-weight:700; line-height:1.4; margin-bottom:20px; color:var(--white); }
+.hero h1 em { font-style:normal; color:var(--line); }
+.hero-divider { width:40px; height:1px; background:linear-gradient(90deg, var(--line), transparent); margin:22px 0; }
+.hero-sub { font-size:13px; color:var(--text-dim); line-height:1.9; max-width:520px; margin-bottom:48px; font-weight:300; }
+.hero-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(255,255,255,0.06); max-width:420px; }
+.stat { background:rgba(255,255,255,0.03); padding:16px 12px; text-align:center; }
+.stat-val { display:block; font-family:'DM Mono',monospace; font-size:16px; color:var(--line); line-height:1; margin-bottom:5px; }
+.stat-label { font-size:10px; color:var(--text-muted); line-height:1.5; }
+
+/* SECTION */
+.section { padding:72px 28px; }
+.sec-label { font-family:'DM Mono',monospace; font-size:10px; color:var(--line); letter-spacing:0.18em; text-transform:uppercase; margin-bottom:10px; }
+.sec-title { font-family:'Noto Serif JP',serif; font-size:clamp(22px,5vw,34px); font-weight:700; line-height:1.35; margin-bottom:16px; color:var(--white); }
+.sec-body { font-size:14px; line-height:1.9; color:var(--text-dim); font-weight:300; }
+
+/* INSIGHT */
+.insight { background:var(--black-mid); }
+.insight-cards { display:flex; flex-direction:column; gap:12px; margin-top:28px; }
+.insight-card { padding:20px 20px 20px 26px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-left:2px solid var(--line); }
+.insight-card.blue { border-left-color:var(--blue); }
+.insight-card h3 { font-size:14px; font-weight:700; color:var(--white); margin-bottom:6px; }
+.insight-card p { font-size:13px; color:var(--text-dim); line-height:1.8; }
+
+/* FLOW */
+.flow-section { background:var(--black); }
+.flow-diagram { margin-top:28px; }
+.flow-title-bar { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+.flow-title-label { font-family:'DM Mono',monospace; font-size:11px; color:var(--line); letter-spacing:0.1em; }
+
+/* ユーザーフロー */
+.user-flow { display:flex; flex-direction:column; gap:0; margin-bottom:32px; }
+.flow-step-row { display:grid; grid-template-columns:140px 1fr; gap:0; }
+.flow-actor { display:flex; align-items:center; justify-content:center; padding:10px 12px; background:rgba(6,199,85,0.06); border-right:1px solid var(--line-border); border-bottom:1px solid var(--border); font-size:11px; color:var(--line); font-weight:700; text-align:center; }
+.flow-actor.admin { background:rgba(74,144,217,0.06); border-right-color:var(--blue-border); color:var(--blue); }
+.flow-content-row { padding:12px 18px; border-bottom:1px solid var(--border); background:rgba(255,255,255,0.02); display:flex; align-items:center; gap:12px; }
+.flow-step-num { width:24px; height:24px; background:var(--line); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:10px; font-weight:700; color:var(--black); flex-shrink:0; }
+.flow-step-num.blue { background:var(--blue); }
+.flow-step-text h4 { font-size:13px; font-weight:700; color:var(--white); margin-bottom:2px; }
+.flow-step-text p { font-size:11px; color:var(--text-dim); line-height:1.5; }
+.flow-arrow { text-align:center; padding:6px; font-size:16px; color:rgba(6,199,85,0.4); }
+
+/* スマホモック */
+.mockup-section { background:var(--black-mid); }
+.mockup-note { margin-top:16px; margin-bottom:32px; padding:14px 18px; background:var(--line-light); border:1px solid var(--line-border); font-size:13px; color:var(--line); line-height:1.7; }
+
+.phone-mockups { display:flex; gap:16px; overflow-x:auto; padding-bottom:8px; margin-top:8px; }
+.phone { flex-shrink:0; width:220px; }
+.phone-label { font-family:'DM Mono',monospace; font-size:10px; color:var(--line); letter-spacing:0.1em; text-align:center; margin-bottom:8px; }
+.phone-frame {
+  background:#1A1A1A; border-radius:24px; overflow:hidden;
+  border:2px solid rgba(255,255,255,0.1);
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+}
+.phone-notch { background:#111; padding:8px 0; display:flex; justify-content:center; }
+.phone-notch-inner { width:60px; height:6px; background:#222; border-radius:3px; }
+
+/* LINE風UI */
+.line-header { background:var(--line); padding:10px 14px; display:flex; align-items:center; gap:8px; }
+.line-header-back { color:rgba(255,255,255,0.8); font-size:16px; }
+.line-header-title { font-size:13px; font-weight:700; color:var(--white); }
+.line-body { background:#F0F0F0; min-height:300px; padding:12px; display:flex; flex-direction:column; gap:8px; }
+
+/* 入力画面 */
+.liff-screen { background:var(--white); padding:14px; min-height:300px; }
+.liff-header { background:var(--line); padding:10px 14px; margin:-14px -14px 14px; display:flex; align-items:center; gap:8px; }
+.liff-header-title { font-size:12px; font-weight:700; color:var(--white); }
+.liff-section-title { font-size:11px; font-weight:700; color:#333; margin-bottom:6px; padding-bottom:4px; border-bottom:2px solid var(--line); }
+.liff-input { width:100%; border:1px solid #DDD; border-radius:4px; padding:7px 10px; font-size:11px; color:#333; margin-bottom:8px; background:#FAFAFA; }
+.liff-select { width:100%; border:1px solid #DDD; border-radius:4px; padding:7px 10px; font-size:11px; color:#333; margin-bottom:8px; background:#FAFAFA; }
+.liff-upload { width:100%; border:2px dashed #DDD; border-radius:4px; padding:14px; text-align:center; margin-bottom:8px; color:#AAA; font-size:11px; }
+.liff-submit { width:100%; background:var(--line); color:var(--white); border:none; border-radius:4px; padding:10px; font-size:12px; font-weight:700; margin-top:6px; }
+.liff-label { font-size:10px; color:#666; margin-bottom:3px; }
+
+/* 査定画面 */
+.liff-status { text-align:center; padding:16px 14px; }
+.liff-status-icon { font-size:36px; margin-bottom:8px; }
+.liff-status-title { font-size:14px; font-weight:700; color:#333; margin-bottom:4px; }
+.liff-status-sub { font-size:11px; color:#888; line-height:1.6; margin-bottom:12px; }
+.liff-timeline { display:flex; flex-direction:column; gap:0; text-align:left; margin-top:10px; }
+.liff-timeline-item { display:flex; gap:8px; align-items:flex-start; padding-bottom:8px; }
+.liff-timeline-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; margin-top:2px; }
+.liff-timeline-dot.done { background:var(--line); }
+.liff-timeline-dot.now { background:var(--blue); }
+.liff-timeline-dot.wait { background:#DDD; }
+.liff-timeline-text { font-size:11px; color:#555; line-height:1.5; }
+.liff-timeline-text strong { color:#333; display:block; }
+
+/* 完了画面 */
+.liff-complete { text-align:center; padding:16px 14px; }
+.liff-amount { font-family:'DM Mono',monospace; font-size:22px; font-weight:700; color:var(--line); margin:8px 0; }
+.liff-amount small { font-size:12px; color:#888; }
+.liff-confirm-btn { width:100%; background:var(--line); color:var(--white); border:none; border-radius:4px; padding:10px; font-size:12px; font-weight:700; margin-top:10px; }
+.liff-decline-btn { width:100%; background:transparent; border:1px solid #DDD; border-radius:4px; padding:8px; font-size:11px; color:#888; margin-top:6px; }
+
+/* 管理側 */
+.admin-screen { background:#F8F9FA; min-height:300px; padding:12px; }
+.admin-header { background:var(--blue); padding:8px 12px; margin:-12px -12px 12px; }
+.admin-header-title { font-size:11px; font-weight:700; color:var(--white); }
+.admin-card { background:var(--white); border:1px solid #DDD; border-radius:6px; padding:10px; margin-bottom:8px; }
+.admin-card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.admin-card-name { font-size:12px; font-weight:700; color:#333; }
+.admin-status-badge { font-size:10px; padding:2px 8px; border-radius:10px; font-weight:700; }
+.admin-status-badge.new { background:#FFF3CD; color:#856404; }
+.admin-status-badge.done { background:#D4EDDA; color:#155724; }
+.admin-card-detail { font-size:10px; color:#888; line-height:1.5; }
+.admin-action-btn { width:100%; background:var(--blue); color:var(--white); border:none; border-radius:4px; padding:6px; font-size:11px; font-weight:700; margin-top:6px; }
+
+/* SPEC */
+.spec { background:var(--black); }
+.spec-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:28px; }
+.spec-card { background:var(--black-light); border:1px solid var(--border); padding:20px; border-top:2px solid var(--line); }
+.spec-card.blue { border-top-color:var(--blue); }
+.spec-card-label { font-family:'DM Mono',monospace; font-size:10px; color:var(--line); letter-spacing:0.1em; margin-bottom:10px; }
+.spec-card.blue .spec-card-label { color:var(--blue); }
+.spec-card h3 { font-size:14px; font-weight:700; color:var(--white); margin-bottom:10px; }
+.spec-card ul { list-style:none; display:flex; flex-direction:column; gap:6px; }
+.spec-card ul li { font-size:12px; color:var(--text-dim); display:flex; gap:8px; line-height:1.6; }
+.spec-card ul li::before { content:'✓'; color:var(--line); flex-shrink:0; font-weight:700; }
+.spec-card.blue ul li::before { color:var(--blue); }
+
+/* ESTIMATE */
+.estimate { background:var(--black-mid); }
+.estimate-box { margin-top:24px; border:1px solid var(--border); overflow:hidden; }
+.estimate-header { padding:20px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; background:var(--black-light); position:relative; }
+.estimate-header::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg, var(--line), transparent); }
+.estimate-header h3 { font-size:15px; font-weight:700; color:var(--white); }
+.estimate-price { font-family:'Noto Serif JP',serif; font-size:26px; font-weight:700; color:var(--line); line-height:1; }
+.estimate-price small { font-family:'Noto Sans JP',sans-serif; font-size:11px; color:var(--gray); margin-left:6px; }
+.estimate-rows { padding:14px 24px; background:var(--black-mid); }
+.estimate-row { display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid var(--border); font-size:13px; }
+.estimate-row:last-child { border-bottom:none; }
+.estimate-row-label { color:var(--text-dim); }
+.estimate-row-val { font-family:'DM Mono',monospace; font-size:12px; color:var(--white); }
+.estimate-note { margin:0 24px 18px; padding:12px 14px; background:var(--line-light); border:1px solid var(--line-border); font-size:12px; color:rgba(80,200,120,0.9); line-height:1.7; }
+
+/* PROCESS */
+.process { background:var(--black); }
+.process-steps { display:flex; flex-direction:column; margin-top:28px; }
+.step { display:grid; grid-template-columns:44px 1fr; gap:14px; padding-bottom:24px; }
+.step:last-child { padding-bottom:0; }
+.step-left { display:flex; flex-direction:column; align-items:center; }
+.step-num { width:34px; height:34px; background:var(--line); display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:12px; font-weight:700; color:var(--black); flex-shrink:0; }
+.step-line { width:1px; flex:1; background:var(--border); margin-top:6px; }
+.step:last-child .step-line { display:none; }
+.step-content { padding-top:5px; }
+.step-content h3 { font-size:14px; font-weight:700; color:var(--white); margin-bottom:5px; }
+.step-content p { font-size:13px; color:var(--text-dim); line-height:1.7; }
+.step-duration { display:inline-block; font-family:'DM Mono',monospace; font-size:10px; color:var(--line); background:var(--line-light); border:1px solid var(--line-border); padding:2px 8px; margin-top:6px; }
+
+/* PORTFOLIO */
+.portfolio { background:var(--black-mid); padding:72px 28px; }
+.portfolio-links { display:flex; flex-direction:column; gap:1px; margin-top:24px; background:rgba(255,255,255,0.06); }
+.portfolio-link { display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.03); padding:16px 20px; text-decoration:none; transition:background 0.2s; }
+.portfolio-link:hover { background:rgba(255,255,255,0.06); }
+.portfolio-link h4 { font-size:13px; font-weight:700; color:var(--white); margin-bottom:3px; }
+.portfolio-link p { font-family:'DM Mono',monospace; font-size:11px; color:rgba(255,255,255,0.25); }
+.p-arrow { color:var(--line); font-size:16px; }
+
+/* CTA */
+.cta { background:var(--black); padding:72px 28px; text-align:center; }
+.cta-box { background:var(--black-light); border:1px solid var(--border); padding:40px 24px; margin-top:28px; position:relative; overflow:hidden; }
+.cta-box::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg, var(--line), transparent); }
+.cta-name { font-family:'Noto Serif JP',serif; font-size:22px; font-weight:700; color:var(--white); margin-bottom:4px; }
+.cta-role { font-family:'DM Mono',monospace; font-size:11px; color:var(--gray); margin-bottom:20px; }
+.cta-divider { height:1px; background:var(--border); margin:18px 0; }
+.cta-message { font-size:13px; color:var(--text-dim); line-height:1.9; }
+
+footer { background:#060606; border-top:1px solid var(--border); padding:18px 28px; text-align:center; }
+footer p { font-family:'DM Mono',monospace; font-size:11px; color:rgba(255,255,255,0.12); }
+
+@media (min-width:768px) {
+  .hero { padding:100px 64px; }
+  .section,.flow-section,.mockup-section,.spec,.estimate,.process,.portfolio,.cta { padding:96px 64px; }
+  .insight-cards { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .insight-cards .insight-card:first-child { grid-column:1/-1; }
+  .process-steps { display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+  .step { padding-bottom:0; }
+  .portfolio-links { display:grid; grid-template-columns:1fr 1fr; gap:1px; }
+  .cta-box { max-width:520px; margin:28px auto 0; padding:48px; }
+}
+@media (max-width:600px) {
+  .spec-grid { grid-template-columns:1fr; }
+  .flow-step-row { grid-template-columns:80px 1fr; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-top"></div>
+  <div class="hero-badge">risa0617 様　機能提案書</div>
+  <div class="hero-label">公式LINE / liff / トレーディングカード買取フロー構築</div>
+  <h1>「入力→査定→受付完了」を<br>LINE上で<em>完結させる</em><br>liffを構築します。</h1>
+  <div class="hero-divider"></div>
+  <p class="hero-sub">単にフォームを作るだけでなく、ユーザーが迷わず申し込めて・管理側が効率よく査定・対応できる——LINE完結型の買取フローを設計・実装します。</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-val">LINE</span><span class="stat-label">完全LINE内<br>完結設計</span></div>
+    <div class="stat"><span class="stat-val">導線</span><span class="stat-label">離脱ゼロの<br>UX設計</span></div>
+    <div class="stat"><span class="stat-val">管理</span><span class="stat-label">運営側フロー<br>込みで構築</span></div>
+  </div>
+</section>
+
+<section class="section insight">
+  <div class="sec-label">Our Insight</div>
+  <h2 class="sec-title">このliffで<br>重要な2つの設計観点</h2>
+  <p class="sec-body">参照サイト（liff.line.me）を確認しました。単なるフォームではなく、「買取申し込みの体験」を設計することがポイントです。</p>
+  <div class="insight-cards">
+    <div class="insight-card">
+      <h3>📱 LINE完結型にすることで申し込み数が最大化される</h3>
+      <p>外部サイトに誘導すると離脱が起きます。liffを使いLINE内でそのまま申し込みまで完結させることで、ユーザーの心理的ハードルを最小化できます。「入力→写真アップロード→査定→受付完了」の流れをLINEのUXに合わせて設計します。</p>
+    </div>
+    <div class="insight-card blue">
+      <h3>⚙️ 管理側フローを込みで設計することで運用負荷を最小化できる</h3>
+      <p>ユーザーから申し込みが来た後、管理側でどう受付・査定・返答するかの設計が重要です。LINEの管理画面・通知・ステータス管理を含めて構築することで、日々の運用を効率化できます。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section flow-section">
+  <div class="sec-label">User Flow</div>
+  <h2 class="sec-title">買取フロー設計</h2>
+  <p class="sec-body">ユーザー側と管理側それぞれの動きを整理した全体フローです。</p>
+
+  <div style="margin-top:28px; border:1px solid var(--border); overflow:hidden;">
+    <div style="display:grid; grid-template-columns:140px 1fr; background:rgba(255,255,255,0.04); border-bottom:1px solid var(--border);">
+      <div style="padding:10px 12px; font-family:'DM Mono',monospace; font-size:10px; color:var(--gray); border-right:1px solid var(--border); text-align:center;">ACTOR</div>
+      <div style="padding:10px 18px; font-family:'DM Mono',monospace; font-size:10px; color:var(--gray);">ACTION</div>
+    </div>
+
+    <div class="flow-step-row">
+      <div class="flow-actor">👤 ユーザー</div>
+      <div class="flow-content-row">
+        <div class="flow-step-num">1</div>
+        <div class="flow-step-text"><h4>LINE友だち追加 → liffを開く</h4><p>公式LINEをフォロー後、メニューまたはメッセージからliffを起動</p></div>
+      </div>
+    </div>
+    <div class="flow-step-row">
+      <div class="flow-actor">👤 ユーザー</div>
+      <div class="flow-content-row">
+        <div class="flow-step-num">2</div>
+        <div class="flow-step-text"><h4>買取申し込みフォーム入力</h4><p>カード情報・状態・枚数・写真アップロード。シンプルなステップ式で入力</p></div>
+      </div>
+    </div>
+    <div class="flow-step-row">
+      <div class="flow-actor">👤 ユーザー</div>
+      <div class="flow-content-row">
+        <div class="flow-step-num">3</div>
+        <div class="flow-step-text"><h4>申し込み完了・査定待ち通知</h4><p>「査定中です。しばらくお待ちください」のステータス表示。LINEで通知も送信</p></div>
+      </div>
+    </div>
+    <div class="flow-step-row">
+      <div class="flow-actor admin">🔧 管理者</div>
+      <div class="flow-content-row">
+        <div class="flow-step-num blue">4</div>
+        <div class="flow-step-text"><h4>管理画面で申し込み確認・査定</h4><p>申し込み一覧から内容・写真を確認し、買取価格を入力して返答</p></div>
+      </div>
+    </div>
+    <div class="flow-step-row">
+      <div class="flow-actor">👤 ユーザー</div>
+      <div class="flow-content-row">
+        <div class="flow-step-num">5</div>
+        <div class="flow-step-text"><h4>査定結果をLINEで受け取る</h4><p>LINEメッセージで買取価格を通知。liffで詳細確認・承諾/辞退の選択</p></div>
+      </div>
+    </div>
+    <div class="flow-step-row">
+      <div class="flow-actor">👤 ユーザー</div>
+      <div class="flow-content-row" style="border-bottom:none;">
+        <div class="flow-step-num">6</div>
+        <div class="flow-step-text"><h4>承諾 → 発送・受付完了</h4><p>承諾後、発送方法・住所入力へ。LINE内で完結してそのまま送付手続きへ</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section mockup-section">
+  <div class="sec-label">UI Mockup</div>
+  <h2 class="sec-title">各画面のイメージ</h2>
+  <p class="sec-body">ユーザーが実際に見るliff画面と、管理者側の管理画面のイメージです。参照サイトをベースに、使いやすさを改善した構成でご提案します。</p>
+  <div class="mockup-note">💡 以下はKairosが提案するUI設計モックです。実際の開発では要件確認後にご提示の参照サイトをもとにブラッシュアップします。</div>
+
+  <div class="phone-mockups">
+    <!-- 申し込みフォーム -->
+    <div class="phone">
+      <div class="phone-label">① 申し込みフォーム</div>
+      <div class="phone-frame">
+        <div class="phone-notch"><div class="phone-notch-inner"></div></div>
+        <div class="liff-screen">
+          <div class="liff-header"><div class="liff-header-title">🃏 トレカ買取申し込み</div></div>
+          <div class="liff-section-title">カード情報</div>
+          <div class="liff-label">カード名・タイトル</div>
+          <input class="liff-input" placeholder="例：ブルーアイズ ホワイトドラゴン" readonly>
+          <div class="liff-label">ゲーム・シリーズ</div>
+          <select class="liff-select"><option>遊戯王</option><option>ポケカ</option><option>MTG</option></select>
+          <div class="liff-label">状態</div>
+          <select class="liff-select"><option>美品（未使用）</option><option>良品</option><option>傷あり</option></select>
+          <div class="liff-label">写真をアップロード</div>
+          <div class="liff-upload">📷 タップして写真を追加<br><span style="font-size:9px;color:#CCC">表面・裏面・状態がわかる写真</span></div>
+          <button class="liff-submit">申し込む →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 査定待ち -->
+    <div class="phone">
+      <div class="phone-label">② 査定待ち画面</div>
+      <div class="phone-frame">
+        <div class="phone-notch"><div class="phone-notch-inner"></div></div>
+        <div class="liff-screen">
+          <div class="liff-header"><div class="liff-header-title">📋 申し込み状況</div></div>
+          <div class="liff-status">
+            <div class="liff-status-icon">⏳</div>
+            <div class="liff-status-title">査定中です</div>
+            <div class="liff-status-sub">通常1〜3営業日以内に<br>LINEにてご連絡します</div>
+          </div>
+          <div class="liff-timeline">
+            <div class="liff-timeline-item">
+              <div class="liff-timeline-dot done"></div>
+              <div class="liff-timeline-text"><strong>申し込み完了</strong>2026/04/30 19:35</div>
+            </div>
+            <div class="liff-timeline-item">
+              <div class="liff-timeline-dot now"></div>
+              <div class="liff-timeline-text"><strong style="color:var(--blue)">査定中...</strong>担当者が確認しています</div>
+            </div>
+            <div class="liff-timeline-item">
+              <div class="liff-timeline-dot wait"></div>
+              <div class="liff-timeline-text"><strong style="color:#AAA">査定結果のご連絡</strong></div>
+            </div>
+            <div class="liff-timeline-item">
+              <div class="liff-timeline-dot wait"></div>
+              <div class="liff-timeline-text"><strong style="color:#AAA">発送・受付完了</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 査定結果 -->
+    <div class="phone">
+      <div class="phone-label">③ 査定結果・承諾</div>
+      <div class="phone-frame">
+        <div class="phone-notch"><div class="phone-notch-inner"></div></div>
+        <div class="liff-screen">
+          <div class="liff-header"><div class="liff-header-title">💰 査定結果</div></div>
+          <div class="liff-complete">
+            <div class="liff-status-icon">✅</div>
+            <div class="liff-status-title">査定が完了しました</div>
+            <div style="font-size:11px;color:#888;margin:6px 0;">ブルーアイズ ホワイトドラゴン（美品）</div>
+            <div class="liff-amount">¥12,000<small> （税込）</small></div>
+            <div style="font-size:10px;color:#AAA;margin-bottom:10px;">有効期限：2026/05/07まで</div>
+            <button class="liff-confirm-btn">この金額で売る →</button>
+            <button class="liff-decline-btn">辞退する</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 管理画面 -->
+    <div class="phone">
+      <div class="phone-label">④ 管理者画面</div>
+      <div class="phone-frame">
+        <div class="phone-notch"><div class="phone-notch-inner"></div></div>
+        <div class="admin-screen">
+          <div class="admin-header"><div class="admin-header-title">🔧 買取申し込み管理</div></div>
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div class="admin-card-name">田中 太郎</div>
+              <span class="admin-status-badge new">新着</span>
+            </div>
+            <div class="admin-card-detail">
+              遊戯王 / ブルーアイズ ホワイトドラゴン<br>
+              状態：美品 / 申し込み：2026/04/30
+            </div>
+            <button class="admin-action-btn">査定価格を入力する</button>
+          </div>
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <div class="admin-card-name">山田 花子</div>
+              <span class="admin-status-badge done">承諾済み</span>
+            </div>
+            <div class="admin-card-detail">
+              ポケカ / ピカチュウVMAX<br>
+              査定額：¥8,500 / 発送待ち
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section spec">
+  <div class="sec-label">Spec</div>
+  <h2 class="sec-title">実装機能仕様</h2>
+  <p class="sec-body">ユーザー側のliffと管理側の機能をセットで構築します。</p>
+  <div class="spec-grid">
+    <div class="spec-card">
+      <div class="spec-card-label">USER SIDE — liff</div>
+      <h3>ユーザー側の機能</h3>
+      <ul>
+        <li>LINE認証でユーザー情報を自動取得</li>
+        <li>カード情報・状態・枚数の入力フォーム</li>
+        <li>写真アップロード（複数枚対応）</li>
+        <li>申し込み状況のステータス表示</li>
+        <li>査定結果の確認・承諾/辞退</li>
+        <li>承諾後の発送先住所入力</li>
+        <li>LINEメッセージでの通知受け取り</li>
+      </ul>
+    </div>
+    <div class="spec-card blue">
+      <div class="spec-card-label">ADMIN SIDE — 管理</div>
+      <h3>管理者側の機能</h3>
+      <ul>
+        <li>申し込み一覧の管理画面</li>
+        <li>ユーザー情報・写真・カード詳細の確認</li>
+        <li>査定価格の入力・返答送信</li>
+        <li>承諾/辞退ステータスの管理</li>
+        <li>新着申し込みのLINE通知</li>
+        <li>発送状況の管理・ステータス更新</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section estimate">
+  <div class="sec-label">Estimate</div>
+  <h2 class="sec-title">お見積もり</h2>
+  <p class="sec-body">機能の実装範囲をヒアリングのうえで、詳細お見積もりをご提示します。</p>
+  <div class="estimate-box">
+    <div class="estimate-header">
+      <h3>公式LINE liff 買取フロー構築</h3>
+      <div class="estimate-price">88,000円<small>税込・相談可</small></div>
+    </div>
+    <div class="estimate-rows">
+      <div class="estimate-row"><span class="estimate-row-label">liffアプリ開発（ユーザー側フロー）</span><span class="estimate-row-val">込み</span></div>
+      <div class="estimate-row"><span class="estimate-row-label">管理者画面の構築</span><span class="estimate-row-val">込み</span></div>
+      <div class="estimate-row"><span class="estimate-row-label">LINE Messaging API連携（通知）</span><span class="estimate-row-val">込み</span></div>
+      <div class="estimate-row"><span class="estimate-row-label">写真アップロード機能</span><span class="estimate-row-val">込み</span></div>
+      <div class="estimate-row"><span class="estimate-row-label">スマホ最適化</span><span class="estimate-row-val">込み</span></div>
+      <div class="estimate-row"><span class="estimate-row-label">納期目安</span><span class="estimate-row-val">相談して決めたい</span></div>
+    </div>
+    <div class="estimate-note">※参照サイトをベースに必要な機能・運用イメージをヒアリングのうえ、正式なお見積もりをご提示します。管理側の機能範囲によって調整します。</div>
+  </div>
+</section>
+
+<section class="section process">
+  <div class="sec-label">Process</div>
+  <h2 class="sec-title">進め方の流れ</h2>
+  <div class="process-steps">
+    <div class="step"><div class="step-left"><div class="step-num">01</div><div class="step-line"></div></div><div class="step-content"><h3>要件ヒアリング</h3><p>参照サイトをベースに、必要な機能・運用イメージ・管理側フローの詳細をお伺いします。</p><span class="step-duration">〜3〜5日</span></div></div>
+    <div class="step"><div class="step-left"><div class="step-num">02</div><div class="step-line"></div></div><div class="step-content"><h3>UI設計・画面仕様の確認</h3><p>各画面のUI案をご確認いただきます。フロー・デザイン・テキストをすり合わせてから開発へ。</p><span class="step-duration">〜1週間</span></div></div>
+    <div class="step"><div class="step-left"><div class="step-num">03</div><div class="step-line"></div></div><div class="step-content"><h3>liff開発・LINE連携実装</h3><p>ユーザー側liff・管理画面・LINE API連携を実装します。開発中は随時進捗をご共有します。</p><span class="step-duration">〜2〜3週間</span></div></div>
+    <div class="step"><div class="step-left"><div class="step-num">04</div><div class="step-line"></div></div><div class="step-content"><h3>テスト・修正・納品</h3><p>実際の公式LINEアカウントでの動作確認・修正対応後に納品します。</p><span class="step-duration">〜1週間</span></div></div>
+  </div>
+</section>
+
+<section class="portfolio">
+  <div class="sec-label">Portfolio</div>
+  <h2 class="sec-title">実績・ポートフォリオ</h2>
+  <div class="portfolio-links">
+    <a href="https://writeful.academy/" target="_blank" rel="noopener" class="portfolio-link"><div><h4>Webサイト・システム実装実績</h4><p>writeful.academy</p></div><span class="p-arrow">→</span></a>
+    <a href="https://kairos-epsilon.github.io/kairos-portfolio/" target="_blank" rel="noopener" class="portfolio-link"><div><h4>LP・開発実績</h4><p>kairos-portfolio</p></div><span class="p-arrow">→</span></a>
+    <a href="https://shibue-shoten.github.io/shibue320/index.html" target="_blank" rel="noopener" class="portfolio-link"><div><h4>コーポレートサイト実績</h4><p>shibue-shoten</p></div><span class="p-arrow">→</span></a>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="sec-label" style="text-align:center">Next Step</div>
+  <h2 class="sec-title" style="text-align:center">まず、要件を<br>聞かせてください。</h2>
+  <p class="sec-body" style="text-align:center;max-width:480px;margin:0 auto">参照サイトをベースに、必要な機能・運用イメージをヒアリングのうえで正式お見積もりをご提示します。まずはお気軽にご相談ください。</p>
+  <div class="cta-box">
+    <div class="cta-name">渋谷 俊久</div>
+    <div class="cta-role">Web Director / Team Kairos</div>
+    <div class="cta-divider"></div>
+    <p class="cta-message">LINE上で完結するトレーディングカード買取フローの構築という点に興味を持ちました。「入力→査定→受付完了」までをストレスなく進められる導線設計と、管理側が効率よく運用できる仕組みをセットで構築できます。参照サイトをベースに、必要な機能・運用イメージをお聞かせいただければ、最適な構成とお見積もりをご提案します。</p>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Kairos Web Production Team — Proposal for risa0617様</p>
+</footer>
+</body>
+</html>
