@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LINE LIFF 買取システム 最終提案書 | Kairos</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #06C755;
+  --green-dark: #04a044;
+  --green-light: #e8faf0;
+  --dark: #0d0d0d;
+  --dark2: #1a1a2e;
+  --dark3: #16213e;
+  --gray: #6b7280;
+  --gray-light: #9ca3af;
+  --light: #f8fafc;
+  --border: #e5e7eb;
+  --white: #ffffff;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--light);
+  color: var(--dark);
+  line-height: 1.8;
+}
+
+.hero {
+  background: linear-gradient(135deg, #0d0d0d 0%, #1a1a2e 50%, #0f3460 100%);
+  color: white;
+  padding: 70px 24px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(6,199,85,0.12) 0%, transparent 65%);
+  border-radius: 50%;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(6,199,85,0.15);
+  border: 1px solid rgba(6,199,85,0.3);
+  color: var(--green);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+}
+
+.hero h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+.hero h1 .line-accent { color: var(--green); }
+
+.hero-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+.hero-badges {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero-badge {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 12px;
+}
+
+.hero-badge strong {
+  display: block;
+  color: white;
+  font-size: 14px;
+  margin-bottom: 2px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.hero-badge span {
+  color: rgba(255,255,255,0.5);
+  font-size: 10px;
+}
+
+.section-divider { height: 6px; background: var(--light); }
+
+.section {
+  background: white;
+  padding: 44px 24px;
+  margin-bottom: 6px;
+}
+
+.section-inner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.section-eyebrow {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--dark);
+  line-height: 1.3;
+}
+
+.section-desc {
+  font-size: 13px;
+  color: var(--gray);
+  margin-bottom: 28px;
+  line-height: 1.7;
+}
+
+/* Flow */
+.flow-side {
+  background: var(--light);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.flow-side-header {
+  padding: 14px 20px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.flow-side-header.user {
+  background: linear-gradient(135deg, #06C755, #04a044);
+  color: white;
+}
+
+.flow-side-header.admin {
+  background: linear-gradient(135deg, #1a1a2e, #0f3460);
+  color: white;
+}
+
+.flow-steps { padding: 16px 20px; }
+
+.flow-step {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.flow-step-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.flow-step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.flow-step-num.user-num { background: var(--green-light); color: var(--green-dark); }
+.flow-step-num.admin-num { background: #e8eaf6; color: #3949ab; }
+
+.flow-step-line {
+  width: 2px;
+  flex: 1;
+  background: var(--border);
+  margin: 3px 0;
+  min-height: 16px;
+}
+
+.flow-step-content {
+  padding: 4px 0 18px;
+  flex: 1;
+}
+
+.flow-step-content strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 3px;
+  color: var(--dark);
+}
+
+.flow-step-content p {
+  font-size: 11px;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+.flow-step-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.badge-auto { background: var(--green-light); color: var(--green-dark); }
+.badge-manual { background: #eff6ff; color: #2563eb; }
+
+/* Photo upload UI */
+.photo-upload-demo {
+  background: var(--light);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+}
+
+.photo-upload-demo-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray);
+  margin-bottom: 10px;
+}
+
+.photo-slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.photo-slot {
+  aspect-ratio: 1;
+  background: #e5e7eb;
+  border-radius: 8px;
+  border: 2px dashed #9ca3af;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--gray);
+  font-weight: 600;
+}
+
+.photo-slot-icon {
+  font-size: 20px;
+  color: #9ca3af;
+}
+
+/* Status flow */
+.status-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 20px 0;
+}
+
+.status-item {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.status-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40px;
+  flex-shrink: 0;
+}
+
+.status-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  border: 2px solid var(--border);
+  background: white;
+}
+
+.status-dot.auto { border-color: var(--green); background: var(--green-light); }
+.status-dot.manual { border-color: #3949ab; background: #e8eaf6; }
+
+.status-connector {
+  width: 2px;
+  flex: 1;
+  background: var(--border);
+  margin: 2px 0;
+  min-height: 24px;
+}
+
+.status-content { padding: 8px 0 24px; flex: 1; }
+.status-name { font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 2px; }
+.status-trigger { font-size: 11px; color: var(--gray); }
+
+/* Feature cards */
+.feature-card {
+  background: var(--light);
+  border-radius: 12px;
+  padding: 18px 20px;
+  border-left: 3px solid var(--green);
+  margin-bottom: 12px;
+}
+
+.feature-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.feature-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--green-light);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.feature-card-title { font-size: 14px; font-weight: 700; color: var(--dark); }
+.feature-card-body { font-size: 12px; color: var(--gray); line-height: 1.7; }
+
+/* Phase cards */
+.phase-card {
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+}
+
+.phase-card-header {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.phase-card-header.p1 { background: var(--dark2); color: white; }
+.phase-card-header.p2 { background: #1e3a5f; color: white; }
+.phase-card-header.p3 { background: #0f3460; color: white; }
+.phase-card-header.total { background: var(--green); color: white; }
+
+.phase-card-label { font-size: 13px; font-weight: 700; }
+.phase-card-sub { font-size: 11px; opacity: 0.65; margin-top: 2px; }
+.phase-card-amount {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.phase-card-body {
+  padding: 16px 20px;
+  background: white;
+}
+
+.phase-feature-list {
+  list-style: none;
+}
+
+.phase-feature-list li {
+  font-size: 12px;
+  color: var(--gray);
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.phase-feature-list li:last-child { border-bottom: none; }
+
+.phase-feature-list li::before {
+  content: '✓';
+  color: var(--green);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Note/Info boxes */
+.note-box {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 12px;
+  color: #78350f;
+  line-height: 1.7;
+  margin-top: 16px;
+}
+
+.note-box strong { display: block; margin-bottom: 4px; color: #92400e; }
+
+.info-box {
+  background: var(--green-light);
+  border: 1px solid rgba(6,199,85,0.2);
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 12px;
+  color: #065f46;
+  line-height: 1.7;
+  margin-top: 16px;
+}
+
+.confirm-box {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.confirm-box h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e40af;
+  margin-bottom: 10px;
+}
+
+.confirm-box p {
+  font-size: 13px;
+  color: #1e3a8a;
+  line-height: 1.7;
+}
+
+/* Tech */
+.tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.tech-tag {
+  background: var(--dark2);
+  color: rgba(255,255,255,0.85);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Schedule */
+.schedule-item {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 0;
+}
+
+.schedule-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 32px;
+  flex-shrink: 0;
+}
+
+.schedule-dot {
+  width: 12px;
+  height: 12px;
+  background: var(--green);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.schedule-line {
+  width: 2px;
+  flex: 1;
+  background: var(--border);
+  margin: 3px 0;
+  min-height: 20px;
+}
+
+.schedule-content { padding: 0 0 24px; flex: 1; }
+.schedule-content strong { display: block; font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.schedule-content p { font-size: 12px; color: var(--gray); }
+
+/* CTA */
+.cta {
+  background: linear-gradient(135deg, #0d0d0d, #1a1a2e);
+  color: white;
+  padding: 50px 24px;
+  text-align: center;
+}
+
+.cta-inner { max-width: 480px; margin: 0 auto; }
+.cta h2 { font-size: 20px; font-weight: 700; margin-bottom: 10px; line-height: 1.4; }
+.cta h2 span { color: var(--green); }
+.cta p { font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 24px; line-height: 1.7; }
+.cta-contact {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 14px 20px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">FINAL PROPOSAL</div>
+    <h1>公式LINE LIFF<br><span class="line-accent">トレカ買取システム</span><br>最終ご提案書</h1>
+    <p class="hero-sub">ヒアリング・通話・要件確定を経た、Kairosからの最終ご提案です。<br>三浦様の事業フェーズに合わせた段階的な構築プランをご提案いたします。</p>
+    <div class="hero-badges">
+      <div class="hero-badge"><strong>2026年5月8日</strong><span>作成日</span></div>
+      <div class="hero-badge"><strong>Kairos 渋谷</strong><span>担当ディレクター</span></div>
+      <div class="hero-badge"><strong>Next.js採用</strong><span>拡張性重視の設計</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- フロー -->
+<div class="section">
+  <div class="section-inner">
+    <p class="section-eyebrow">USER & ADMIN FLOW</p>
+    <h2 class="section-title">お客様・管理者それぞれの動き</h2>
+    <p class="section-desc">買取申し込みから振込完了まで、お客様と管理者がそれぞれどう動くかを整理しました。</p>
+
+    <!-- ユーザーフロー -->
+    <div class="flow-side">
+      <div class="flow-side-header user">👤 お客様側の流れ</div>
+      <div class="flow-steps">
+
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-num user-num">1</div><div class="flow-step-line"></div></div>
+          <div class="flow-step-content">
+            <strong>LINE友だち追加 → LIFFを開く</strong>
+            <p>公式LINEを友だち追加すると、買取フォームが自動で開きます。</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-num user-num">2</div><div class="flow-step-line"></div></div>
+          <div class="flow-step-content">
+            <strong>カード情報・写真を送信</strong>
+            <p>カード名・状態と、表・裏・斜め上からの写真3枚をアップロードして送信します。複数カードをまとめて送ることも可能です。</p>
+            <div class="photo-upload-demo">
+              <div class="photo-upload-demo-title">📷 写真アップロードイメージ</div>
+              <div class="photo-slots">
+                <div class="photo-slot"><div class="photo-slot-icon">＋</div><div>表面</div></div>
+                <div class="photo-slot"><div class="photo-slot-icon">＋</div><div>裏面</div></div>
+                <div class="photo-slot"><div class="photo-slot-icon">＋</div><div>斜め上</div></div>
+              </div>
+            </div>
+            <span class="flow-step-badge badge-auto">ステータス自動更新：査定結果待ち</span>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-num user-num">3</div><div class="flow-step-line"></div></div>
+          <div class="flow-step-content">
+            <strong>満額査定金額をLINEで受け取る</strong>
+            <p>管理者から査定結果がLINEで届きます。カードごとにリスト形式で金額が表示されます。</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-num user-num">4</div><div class="flow-step-line"></div></div>
+          <div class="flow-step-content">
+            <strong>承諾 → お客様情報・本人確認書類を入力</strong>
+            <p>送るカードを選択（やめるカードは選択しない）→ お客様情報・本人確認書類を入力すると、即座に配送先が表示されます。</p>
+            <span class="flow-step-badge badge-auto">ステータス自動更新：発送待ち</span>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-num user-num">5</div><div class="flow-step-line"></div></div>
+          <div class="flow-step-content">
+            <strong>カードを発送・追跡番号を入力</strong>
+            <p>表示された配送先へカードを発送。追跡番号をLIFF上で入力して発送完了ボタンを押します。</p>
+            <span class="flow-step-badge badge-auto">ステータス自動更新：到着待ち</span>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-num user-num">6</div><div class="flow-step-line"></div></div>
+          <div class="flow-step-content">
+            <strong>最終査定金額を受け取り・承諾/返送を選択</strong>
+            <p>現物確認後の最終査定金額がLINEで届きます。減額の場合は元の金額に打ち消し線＋新金額で表示。LIFF上で承諾または返送を選択します。</p>
+            <p style="margin-top:4px; font-size:11px; color:#ef4444;">※満額の場合は返送不可（事前に説明文を表示）</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-num user-num">7</div></div>
+          <div class="flow-step-content">
+            <strong>振込を待つ</strong>
+            <p>承諾後、管理者が振込を完了します。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 管理者フロー -->
+    <div class="flow-side">
+      <div class="flow-side-header admin">🔧 管理者側の流れ</div>
+      <div class="flow-steps">
+
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-num admin-num">1</div><div class="flow-step-line"></div></div>
+          <div class="flow-step-content">
+            <strong>LINEで買取依頼の通知を受け取る</strong>
+            <p>お客様がカード情報を送信すると、管理者のLINEに自動で通知が届きます。</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-num admin-num">2</div><div class="flow-step-line"></div></div>
+          <div class="flow-step-content">
+            <strong>満額査定金額をお客様に送信</strong>
+            <p>カード情報・写真をもとに満額査定額を算出し、お客様のLINEへ手動で送信します。</p>
+            <span class="flow-step-badge badge-manual">ステータス手動更新：申込中</span>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-num admin-num">3</div><div class="flow-step-line"></div></div>
+          <div class="flow-step-content">
+            <strong>カードが届いたら荷物と顧客情報を照合</strong>
+            <p>荷物に記載された申込番号で管理画面（ブラウザ上の管理者専用サイト）を検索し、顧客情報と照合します。</p>
+            <span class="flow-step-badge badge-manual">ステータス手動更新：査定中</span>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-num admin-num">4</div><div class="flow-step-line"></div></div>
+          <div class="flow-step-content">
+            <strong>現物確認・査定</strong>
+            <p>実物のカードを確認し、最終査定金額を決定します。</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-num admin-num">5</div><div class="flow-step-line"></div></div>
+          <div class="flow-step-content">
+            <strong>最終査定結果をLINEで手動送信</strong>
+            <p>最終査定金額をお客様のLINEへ送信します。</p>
+            <span class="flow-step-badge badge-manual">ステータス手動更新：承諾待ち</span>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-num admin-num">6</div></div>
+          <div class="flow-step-content">
+            <strong>ユーザーの承諾を確認後、振込・完了</strong>
+            <p>お客様が承諾したことを確認し、指定口座へ振込して取引完了です。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="display:flex; gap:12px; margin-top:8px; flex-wrap:wrap;">
+      <div style="display:flex; align-items:center; gap:6px; font-size:11px; color:var(--gray);">
+        <div style="width:10px; height:10px; background:var(--green); border-radius:50%;"></div>
+        自動更新（お客様の操作で自動的に変わる）
+      </div>
+      <div style="display:flex; align-items:center; gap:6px; font-size:11px; color:var(--gray);">
+        <div style="width:10px; height:10px; background:#3949ab; border-radius:50%;"></div>
+        手動更新（管理者が管理画面で更新）
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ステータス -->
+<div class="section">
+  <div class="section-inner">
+    <p class="section-eyebrow">STATUS MANAGEMENT</p>
+    <h2 class="section-title">ステータスの種類と更新タイミング</h2>
+    <p class="section-desc">お客様・管理者の操作に連動して、ステータスが自動または手動で更新されます。</p>
+
+    <div class="status-flow">
+      <div class="status-item">
+        <div class="status-left"><div class="status-dot auto">📋</div><div class="status-connector"></div></div>
+        <div class="status-content"><div class="status-name">査定結果待ち</div><div class="status-trigger">お客様がカード情報を送信した時点で自動更新</div></div>
+      </div>
+      <div class="status-item">
+        <div class="status-left"><div class="status-dot manual">📨</div><div class="status-connector"></div></div>
+        <div class="status-content"><div class="status-name">申込中</div><div class="status-trigger">管理者が満額査定を送信後、手動で更新</div></div>
+      </div>
+      <div class="status-item">
+        <div class="status-left"><div class="status-dot auto">📦</div><div class="status-connector"></div></div>
+        <div class="status-content"><div class="status-name">発送待ち</div><div class="status-trigger">お客様が個人情報・本人確認書類を入力・送信した時点で自動更新</div></div>
+      </div>
+      <div class="status-item">
+        <div class="status-left"><div class="status-dot auto">🚚</div><div class="status-connector"></div></div>
+        <div class="status-content"><div class="status-name">到着待ち</div><div class="status-trigger">お客様が追跡番号を入力・発送完了ボタンを押した時点で自動更新</div></div>
+      </div>
+      <div class="status-item">
+        <div class="status-left"><div class="status-dot manual">🔍</div><div class="status-connector"></div></div>
+        <div class="status-content"><div class="status-name">査定中</div><div class="status-trigger">管理者がカード到着を確認後、手動で更新</div></div>
+      </div>
+      <div class="status-item">
+        <div class="status-left"><div class="status-dot manual">✅</div></div>
+        <div class="status-content"><div class="status-name">承諾待ち</div><div class="status-trigger">管理者が最終査定結果を送信後、手動で更新</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- Phase構成 -->
+<div class="section">
+  <div class="section-inner">
+    <p class="section-eyebrow">PRICING & PHASES</p>
+    <h2 class="section-title">段階的な構築プランと費用</h2>
+    <p class="section-desc">Phaseが進むごとに管理者の手作業が減り、事業運営が効率化されていきます。</p>
+
+    <div class="phase-card">
+      <div class="phase-card-header p1">
+        <div><div class="phase-card-label">Phase1 / 初期構成</div><div class="phase-card-sub">まず最小構成でローンチ</div></div>
+        <div class="phase-card-amount">¥88,000</div>
+      </div>
+      <div class="phase-card-body">
+        <ul class="phase-feature-list">
+          <li>LIFFフォーム（2段階：査定前・承諾後）</li>
+          <li>写真アップロード（表・裏・斜め上の3枠固定）</li>
+          <li>申込番号の自動発行・ユーザーへ自動送信</li>
+          <li>ステータス確認画面（お客様が自身の状況を確認）</li>
+          <li>管理画面（申し込み一覧・ステータス管理・顧客情報確認・Excel出力）</li>
+          <li>LINE通知（申込時に自動送信）</li>
+          <li>本人確認書類の保管（後述）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-card-header p2">
+        <div><div class="phase-card-label">Phase2 / 管理効率化</div><div class="phase-card-sub">手動対応をシステムに置き換える</div></div>
+        <div class="phase-card-amount">+¥70,000</div>
+      </div>
+      <div class="phase-card-body">
+        <ul class="phase-feature-list">
+          <li>管理画面から査定金額入力 → ユーザーへ自動LINE通知</li>
+          <li>承諾/返送フローのLIFF上での完結</li>
+          <li>振込完了ボタン → ユーザーへ自動LINE通知</li>
+          <li>発送管理・追跡番号の管理画面での一元管理</li>
+          <li>LINE通知の完全自動化（ステータス変更のたびに自動送信）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-card-header p3">
+        <div><div class="phase-card-label">Phase3 / 事業の可視化・効率化</div><div class="phase-card-sub">データを活用して事業を拡大する</div></div>
+        <div class="phase-card-amount">+¥70,000</div>
+      </div>
+      <div class="phase-card-body">
+        <ul class="phase-feature-list">
+          <li>買取実績レポート（月別・カード種別の件数・金額グラフ）</li>
+          <li>一括Excel出力・古物商帳簿形式での自動生成</li>
+          <li>リピーター判定・顧客別の過去取引履歴管理</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-card-header total">
+        <div><div class="phase-card-label">フル構成合計</div><div class="phase-card-sub">Phase1〜3すべて完成した状態</div></div>
+        <div class="phase-card-amount">¥228,000</div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      各Phaseは必要なタイミングで順番に追加いただく形で問題ございません。まずPhase1でご運用いただき、件数・業務量が増えてきたタイミングでPhase2・3をご検討ください。<br><br>
+      なお、Next.jsでの開発に切り替わったことにより、以前のご提案からPhase内容を一部変更しております。ご不明な点がございましたらお気軽にご連絡ください。
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- 技術 -->
+<div class="section">
+  <div class="section-inner">
+    <p class="section-eyebrow">TECHNOLOGY</p>
+    <h2 class="section-title">採用技術について</h2>
+    <p class="section-desc">将来的な拡張を見越し、Next.jsでの構築を採用します。Phase移行時の作り直しが不要で、機能追加のみでスムーズに拡張できます。</p>
+    <div class="tech-list">
+      <span class="tech-tag">Next.js</span>
+      <span class="tech-tag">LINE LIFF</span>
+      <span class="tech-tag">LINE Messaging API</span>
+      <span class="tech-tag">Database</span>
+      <span class="tech-tag">GitHub Pages</span>
+    </div>
+    <div class="note-box">
+      <strong>古物商申請について</strong>
+      開発の中で1ページ目が完成した段階でGitHub Pages上に公開いたします。警察署への申請用としてお使いいただけます。
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- 納期 -->
+<div class="section">
+  <div class="section-inner">
+    <p class="section-eyebrow">SCHEDULE</p>
+    <h2 class="section-title">納期の目安</h2>
+    <div class="schedule-item">
+      <div class="schedule-left"><div class="schedule-dot"></div><div class="schedule-line"></div></div>
+      <div class="schedule-content"><strong>正式ご発注・要件最終確定</strong><p>クラウドワークス上で契約手続きを進めます</p></div>
+    </div>
+    <div class="schedule-item">
+      <div class="schedule-left"><div class="schedule-dot"></div><div class="schedule-line"></div></div>
+      <div class="schedule-content"><strong>開発期間：約2〜3週間</strong><p>LIFFフォーム・管理画面・LINE連携の実装</p></div>
+    </div>
+    <div class="schedule-item">
+      <div class="schedule-left"><div class="schedule-dot"></div></div>
+      <div class="schedule-content"><strong>テスト・納品</strong><p>動作確認後、本番環境への反映・お引き渡し</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- 確認事項 -->
+<div class="section">
+  <div class="section-inner">
+    <p class="section-eyebrow">CONFIRMATION</p>
+    <h2 class="section-title">ご確認いただきたい事項</h2>
+    <p class="section-desc">1点だけご確認・ご検討いただきたい事項がございます。</p>
+
+    <div class="confirm-box">
+      <h3>📷 写真アップロードの枠数・種類について</h3>
+      <p>
+        現在、写真アップロードは「表面・裏面・斜め上」の3枠固定でご提案しております。こちらはKairosのイメージでご用意した構成です。枚数・種類に変更やご要望がございましたらお知らせください。
+      </p>
+    </div>
+
+    <div class="confirm-box">
+      <h3>📦 本人確認書類の保管方法について</h3>
+      <p>
+        現在は管理画面上での一括管理でご提案しております。S3無しで管理画面管理でも十分使えますが、将来的に数十万件規模になってくると、画像データの蓄積により管理画面の動作が重くなる可能性がございます。<br><br>
+        対策として、当初ご提案しておりました本人確認書類の画像のみ専用のクラウドストレージ（Amazon S3）に保存し、管理画面から同じように確認できる形にする方法がございます。管理画面での操作感は変わらず、データが増えても動作が重くならない設計になります。<br><br>
+        月々数百〜数千円程度の費用が別途かかりますが、今のうちから導入しておくことをおすすめしております。ご検討いただけますと幸いです。
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- CTA -->
+<div class="cta">
+  <div class="cta-inner">
+    <h2>ご不明な点は<br><span>お気軽にご連絡ください</span></h2>
+    <p>内容にご不明な点・修正のご希望がございましたら、いつでもご連絡ください。正式なご発注に向けて、引き続きよろしくお願いいたします。</p>
+    <div class="cta-contact">Kairos 渋谷 / クラウドワークスメッセージにてご連絡ください</div>
+  </div>
+</div>
+
+</body>
+</html>
