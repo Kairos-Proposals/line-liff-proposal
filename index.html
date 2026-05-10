@@ -592,13 +592,13 @@ body {
           <div class="flow-step-left"><div class="flow-step-num user-num">2</div><div class="flow-step-line"></div></div>
           <div class="flow-step-content">
             <strong>カード情報・写真を送信</strong>
-            <p>カード名・状態と、表・裏・斜め上からの写真3枚をアップロードして送信します。複数カードをまとめて送ることも可能です。</p>
+            <p>カード名・状態と、表・裏の写真をアップロードして送信します。角の4箇所など詳細な写真も追加登録可能です（最大10枚）。複数カードをまとめて送ることも可能です。</p>
             <div class="photo-upload-demo">
-              <div class="photo-upload-demo-title">📷 写真アップロードイメージ</div>
+              <div class="photo-upload-demo-title">📷 写真アップロードイメージ（最大10枚登録可）</div>
               <div class="photo-slots">
                 <div class="photo-slot"><div class="photo-slot-icon">＋</div><div>表面</div></div>
                 <div class="photo-slot"><div class="photo-slot-icon">＋</div><div>裏面</div></div>
-                <div class="photo-slot"><div class="photo-slot-icon">＋</div><div>斜め上</div></div>
+                <div class="photo-slot" style="border-color: var(--green); background: var(--green-light);"><div class="photo-slot-icon" style="color: var(--green);">＋</div><div style="color: var(--green-dark); font-weight:700;">もっと追加</div></div>
               </div>
             </div>
             <span class="flow-step-badge badge-auto">ステータス自動更新：査定結果待ち</span>
@@ -608,8 +608,8 @@ body {
         <div class="flow-step">
           <div class="flow-step-left"><div class="flow-step-num user-num">3</div><div class="flow-step-line"></div></div>
           <div class="flow-step-content">
-            <strong>満額査定金額をLINEで受け取る</strong>
-            <p>管理者から査定結果がLINEで届きます。カードごとにリスト形式で金額が表示されます。</p>
+            <strong>写真状態での査定金額をLINEで受け取る</strong>
+            <p>管理者から査定結果がLINEで届きます。カードごとにリスト形式で金額が表示されます。写真の状態をもとにした査定のため、現物到着後に減額となる場合があります。その際は減額理由のメモとともにお知らせします（例：右上に白かけ1点で1,000円減額）。</p>
           </div>
         </div>
 
@@ -627,7 +627,7 @@ body {
           <div class="flow-step-content">
             <strong>カードを発送・追跡番号を入力</strong>
             <p>表示された配送先へカードを発送。追跡番号をLIFF上で入力して発送完了ボタンを押します。</p>
-            <span class="flow-step-badge badge-auto">ステータス自動更新：到着待ち</span>
+            <span class="flow-step-badge badge-auto">ステータス自動更新：発送中</span>
           </div>
         </div>
 
@@ -667,8 +667,8 @@ body {
         <div class="flow-step">
           <div class="flow-step-left"><div class="flow-step-num admin-num">2</div><div class="flow-step-line"></div></div>
           <div class="flow-step-content">
-            <strong>満額査定金額をお客様に送信</strong>
-            <p>カード情報・写真をもとに満額査定額を算出し、お客様のLINEへ手動で送信します。</p>
+            <strong>写真状態での査定金額をお客様に送信</strong>
+            <p>カード情報・写真をもとに査定額を算出し、お客様のLINEへ手動で送信します。減額理由がある場合はメモとともに送信できます。</p>
             <span class="flow-step-badge badge-manual">ステータス手動更新：申込中</span>
           </div>
         </div>
@@ -747,7 +747,7 @@ body {
       </div>
       <div class="status-item">
         <div class="status-left"><div class="status-dot auto">🚚</div><div class="status-connector"></div></div>
-        <div class="status-content"><div class="status-name">到着待ち</div><div class="status-trigger">お客様が追跡番号を入力・発送完了ボタンを押した時点で自動更新</div></div>
+        <div class="status-content"><div class="status-name">発送中</div><div class="status-trigger">お客様が追跡番号を入力・発送完了ボタンを押した時点で自動更新</div></div>
       </div>
       <div class="status-item">
         <div class="status-left"><div class="status-dot manual">🔍</div><div class="status-connector"></div></div>
